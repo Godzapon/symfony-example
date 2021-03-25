@@ -1,0 +1,25 @@
+version: '3'
+
+services: # containers
+  db-sf:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: my_secret_pw_shh
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: devuser
+      MYSQL_PASSWORD: devpass
+    ports:
+      - "3306:3306"
+  php-sf:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: php
+    depends_on:
+      - db-sf
+    volumes:
+      - ./home/:/home/
+    ports:
+      - "8080:8000"
+    stdin_open: true
+    tty: true
